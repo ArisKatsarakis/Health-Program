@@ -1,0 +1,11 @@
+#pnl {
+    height: 300px;
+}
+header{
+    text-align: center;
+    border-bottom: 5px black double;
+}
+
+#username{
+    text-align: center;
+}

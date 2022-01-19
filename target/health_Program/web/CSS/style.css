@@ -1,0 +1,21 @@
+header {
+    background-color: black;
+    color: whitesmoke;
+    text-align: center;
+    padding-top: 0px;
+}
+body {
+    padding: 1%;
+}
+
+#pass-check{
+    visibility: hidden;
+}
+
+#doctor_details{
+    visibility: hidden;
+}
+
+#amka_inv{
+    visibility: hidden;
+}
