@@ -1,5 +1,5 @@
 function  Show_Reg(){
-    $("#content").load("web/form.html");
+    $("#content").load("web/newform.html");
 }
 function  Show_log(){
     $("#content").load("web/login.html");
