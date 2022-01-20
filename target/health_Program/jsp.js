@@ -11,7 +11,8 @@ function Login(){
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200){
             if (xhr.response != null){
-                 form = JSON.parse(xhr.responseText);
+                form = JSON.parse(xhr.responseText);
+                 //repas kala
                 if(form != null){
                     alert("Successful Login !");
                 }
@@ -45,8 +46,8 @@ function  show_data(){
         data:{username:"Diaolos93"},
         type: 'get',
         success:function (data){
-            const jsondata = JSON.parse(data);
-
+                const d = JSON.parse(data);
+                alert(data);
 
         }
     }

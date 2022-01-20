@@ -5,6 +5,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
 
 @WebServlet(name = "get_data", value = "/get_data")
 public class get_data extends HttpServlet {
@@ -15,10 +17,9 @@ public class get_data extends HttpServlet {
         String username = request.getParameter("username");
         try{
             User us = User.getUser(username);
-            String d  = data.toJson(us);
+            String d = data.toJson(us);
             out.print(d);
             out.flush();
-
         }catch(Exception e){
             System.out.println(e.toString());
         }
