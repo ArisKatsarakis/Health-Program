@@ -45,7 +45,9 @@ function  show_data(){
         data:{username:"Diaolos93"},
         type: 'get',
         success:function (data){
-            alert(data);
+            const jsondata = JSON.parse(data);
+
+
         }
     }
     );
