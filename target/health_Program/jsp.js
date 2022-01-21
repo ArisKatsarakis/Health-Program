@@ -4,6 +4,9 @@ function  Show_Reg(){
 function  Show_log(){
     $("#content").load("web/login.html");
 }
+function Show_Reg_2(){
+    $("#content").load("web/newform.html");
+}
 
 function Login(){
     var xhr = new XMLHttpRequest();
