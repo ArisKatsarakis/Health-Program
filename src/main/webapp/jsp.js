@@ -66,3 +66,17 @@ function  show_type(){
     var type = $('input[name = "type"]:checked').val();
     alert(type);
 }
+
+function create_ren(){
+    var xhr = new XMLHttpRequest();
+    var form ;
+
+}
+
+function create_date(){
+    var date = new Date();
+    var data = date.getDate();
+
+    alert(data);
+
+}

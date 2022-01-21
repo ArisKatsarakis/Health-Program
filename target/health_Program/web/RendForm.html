@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function generate_hours(){
+            var time  = "08:30";
+            for (let i = 0; i < 10 ; i++){
+                $("#hours").append("<button class = \"btn-primary\" >"+time+"</button>\n");
+                if(time[3] == '3'){
+                    time[1] = time[1] + 1 ;
+                    time[3] = "0";
+                }else{
+                    time[3] = "3";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <form onsubmit="create_ren();return false;" id = "ren_form">
+        <label for = "date">Date of Apointment</label>
+        <input  class  = "form-control" type = "date" id = "date" min = "">
+        <div id=" hours">
+            <h3>Hours:</h3>
+            <button class = "btn-primary" onclick="generate_hours()">Create hours</button>
+        </div>
+
+    </form>
+</body>
+</html>

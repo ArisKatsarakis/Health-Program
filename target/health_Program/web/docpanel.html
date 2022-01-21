@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script>
+        function show_form(){
+            $("#forms").load("web/RendForm.html");
 
+        }
+    </script>
 </head>
 <body>
 <div class="form-control ">
     <h2> Hello Doc </h2>
-    <button class="btn-primary"> Generate Rendevouz</button>
-    <button class="btn-primary"> Show Patients History</button>
+    <button onclick="show_form()" class="btn-primary"> Generate Rendevouz</button>
+    <button  class="btn-primary"> Show Patients History</button>
     <button class="btn-primary"> Change / Cancel Rendevouz</button>
     <button class="btn-primary"> New Data for Patient</button>
 </div>
