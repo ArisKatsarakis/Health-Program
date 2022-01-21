@@ -14,6 +14,8 @@ public class User {
     double weight;
     int blooddonor;
     String bloodtype;
+    String type;
+
 
     public void createSimpleUsert() throws SQLException, ClassCastException {
         try {
@@ -201,13 +203,19 @@ public class User {
     {
         return this.lon;
     }
-    public void setUsername(String uname){
-        this.username =  uname;
+    public void setUsername(String uname) {
+        this.username = uname;
 
+    }
+    public  String getType(){
+        return  this.type;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    public void setType(String type){
+        this.type = type;
     }
 
     public void setAmka(String amka) {

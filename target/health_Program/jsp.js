@@ -1,26 +1,31 @@
 function  Show_Reg(){
-    $("#content").load("web/newform.html");
+    $("#content").load("web/form.html");
 }
 function  Show_log(){
     $("#content").load("web/login.html");
-}
-function Show_Reg_2(){
-    $("#content").load("web/newform.html");
 }
 
 function Login(){
     var xhr = new XMLHttpRequest();
     var form = 0;
+
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200){
             if (xhr.response != null){
                 form = JSON.parse(xhr.responseText);
+
                  //repas kala
                 if(form != null){
                     alert("Successful Login !");
                 }
-                $("#content").load("web/userpanel.html");
-                $("#username").html(form.username);
+                if(form.type == "def"){
+                    $("#content").load("web/userpanel.html");
+                    $("#username").html(form.username);
+                }else{
+                    $("#content").load("web/docpanel.html");
+                    $("#username").html(form.username);
+                }
+
 
             }
         }else{
@@ -57,4 +62,7 @@ function  show_data(){
     );
 }
 
-
+function  show_type(){
+    var type = $('input[name = "type"]:checked').val();
+    alert(type);
+}

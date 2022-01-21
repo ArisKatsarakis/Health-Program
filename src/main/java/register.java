@@ -25,6 +25,9 @@ public class register extends HttpServlet {
         new_user.setAmka( request.getParameter("amka"));
         new_user.setWeight( Double.parseDouble(request.getParameter("weight")));
         new_user.setBloodtype(request.getParameter("b-type"));
+        if(request.getParameter("type") == "doc"){
+            System.out.println("he is a doctor");
+        }
         //New user Ready !!!
         out.println(new_user.getAmka());
         try {
