@@ -105,3 +105,17 @@ function generate_hours(){
         }
     }
 }
+
+function get_history(){
+    //gets history of old exams of patients
+    
+}
+
+function alter_ren(){
+    //Change randevouz hour or cancel it 
+}
+
+function add_data(){
+    
+    //add new exams to a patient 
+}

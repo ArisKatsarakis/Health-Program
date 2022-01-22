@@ -5,6 +5,8 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,8 +33,19 @@ public class ren extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            System.out.println("he is here");
+            String q = "insert into rendevouz values ( 'testing', 'null', 'open',"
+                    + "'08:00', '"
+                    + request.getParameter("date")
+                    + "'); ";
+            try{
+              Connection con = DB_Connection.getConnection();
+              Statement stmt = con.createStatement();
+              stmt.execute(q);
+//              /check the query
+            }catch(Exception e){
+            
+            }            
+                    
         }
     }
 
