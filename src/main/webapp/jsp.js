@@ -8,7 +8,6 @@ function  Show_log(){
 function Login(){
     var xhr = new XMLHttpRequest();
     var form = 0;
-
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200){
             if (xhr.response != null){
@@ -69,14 +68,40 @@ function  show_type(){
 
 function create_ren(){
     var xhr = new XMLHttpRequest();
+    
+     alert($("#date").val());
+    xhr.onload = function(){
+        if(xhr.readyState ===4 && xhr.status === 200){
+            alert("Success");
+        }
+    }
     var form ;
-
+    var data = $('#ren').serialize();
+    alert(data);
+    
+    xhr.open('POST',"ren");
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(data);
+    
 }
 
 function create_date(){
     var date = new Date();
-    var data = date.getDate();
-
+    var data = date.getDate()
     alert(data);
 
+}
+//create hours with var as int 
+function generate_hours(){
+    var time = "08:00";
+    for(let i =0; i<1 ; i++){
+        $("#hours").append("<button  class ='btn-primary'>"+time+"</button>");
+        if(time[3] === '3'){
+            time[1] = time[1] +1;
+            time[3] = 0;
+        }else{
+            time[3] = '3';
+          
+        }
+    }
 }

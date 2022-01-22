@@ -24,10 +24,7 @@ public class Reg_Form extends HttpServlet {
 
             String outcome = s_build.toString();
             out.print(outcome);
-
             br.close();
-
-
         }catch (Exception e ){
             System.out.println(e.toString());
         }
