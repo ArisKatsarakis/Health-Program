@@ -67,21 +67,19 @@ function  show_type(){
 }
 
 function create_ren(){
-    var xhr = new XMLHttpRequest();
-    
-     alert($("#date").val());
-    xhr.onload = function(){
-        if(xhr.readyState ===4 && xhr.status === 200){
-            alert("Success");
-        }
-    }
-    var form ;
-    var data = $('#ren').serialize();
-    alert(data);
-    
-    xhr.open('POST',"ren");
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(data);
+   $.ajax({
+       url:'ren',
+       data: {
+           username: $("#username").text() , 
+           date: $("#date").val(),
+           price: $("#price").val()
+       },
+       type: 'POST',
+       success: function (data){
+           alert("Randevouz Successfully Created ");
+       }
+   }
+           );
     
 }
 
@@ -105,6 +103,17 @@ function generate_hours(){
         }
     }
 }
+function show_ran(){
+    $.ajax({
+       url:'ren',
+       type: 'GET',
+       data: {username: $("#username").text()},
+       success: function(data){
+           alert(data);
+       }
+    });
+}
+
 
 function get_history(){
     //gets history of old exams of patients

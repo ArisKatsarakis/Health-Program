@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author zaxariaskatsarakis
  */
-@WebServlet(name = "ren", value ="/ren" )
+@WebServlet(name = "ren", value = "/ren")
 public class ren extends HttpServlet {
 
     /**
@@ -29,26 +31,6 @@ public class ren extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            String q = "insert into rendevouz values ( 'testing', 'null', 'open',"
-                    + "'08:00', '"
-                    + request.getParameter("date")
-                    + "'); ";
-            try{
-              Connection con = DB_Connection.getConnection();
-              Statement stmt = con.createStatement();
-              stmt.execute(q);
-//              /check the query
-            }catch(Exception e){
-            
-            }            
-                    
-        }
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -57,11 +39,42 @@ public class ren extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     *
+     *
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //It gets all the randevouz of a doctor
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            PrintWriter out = response.getWriter();
+
+            Randevouz r = new Randevouz();
+            String query = "select * from rendevouz where username_doc = '"
+                    + request.getParameter("username")
+                    + "';";
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println(query);
+            response.setStatus(200);
+            while (rs.next()) {
+                Gson data = new Gson();
+                String ret ;
+                r.setDoctor_info(rs.getString("username_doc"));
+                r.setDate_time(rs.getString("date") + rs.getString("hour"));
+                r.setPrice(rs.getInt(rs.getInt("price")));
+                ret = data.toJson(r);
+                out.println(ret);
+            }
+            
+             
+            
+            out.flush();
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     /**
@@ -75,7 +88,29 @@ public class ren extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String q = "insert into rendevouz values ( '"
+                + request.getParameter("username")
+                + "', 'null', '"
+                + request.getParameter("date")
+                + "',"
+                + "'08:00', 'open"
+                + "',"
+                + request.getParameter("price")
+                + "); ";
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            PrintWriter out = response.getWriter();
+            System.out.println(q);
+            stmt.execute(q);
+            response.setStatus(200);
+            out.print("Sucess Creatiaon \n");
+            out.flush();
+//              /check the query
+        } catch (Exception e) {
+
+        }
+
     }
 
     /**
@@ -87,5 +122,6 @@ public class ren extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 
 }

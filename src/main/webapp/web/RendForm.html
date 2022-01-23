@@ -2,23 +2,32 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-<!--        <script>
-            $("#hours").on("click", function () {
-                var id = $(this).attr('id');
-                var time = document.getElementById(id).textContent;
-                $("#sch").append(" " + time + ",");
-
-            }
-            );
-        </script>-->
     </head>
     <body>
-        <form onsubmit="create_ren();return false;" id = "ren">
-            <div class = "form-group">
-                <label for = "date"> Date of Appointment </label>
-                <input  class  = "form-control" type = "date" id = "date" value = "1993-11-22" >
-                <input type="text" class= "form-control" value="check" id="test">
-                <button class="btn-primary" type="submit">Submit</button>
+        <form class = 'form-group' onsubmit="create_ren();return false;"  >
+            <div class = "form-control" > 
+                <label for ="date"> Date of appointment</label>
+                <input type="date" class = "form-control" value = '1994-11-22' id = "date">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hours
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dp">
+                        <a class="dropdown-item" href="#">08:30</a>
+                        <a class="dropdown-item" href="#">09:00</a>
+                        <a class="dropdown-item" href="#">10:00</a>
+                    </div>
+                </div>
+                <div class = "form-group col-md-12" > 
+                    <label  for ="price">Price: </label>
+                    <input id = "price" type ="text" value ="50" class ="form-control">€
+                </div>
+                <div>
+                    <button type ="submit" class="btn-secondary">Create Rendevou</button>
+                </div>
+                <div class = "form-control"  id="apoint">
+                    <button type ="button" onclick = "show_ran()"> Show Randevouz</button>
+                </div>
             </div>
         </form>
     </body>

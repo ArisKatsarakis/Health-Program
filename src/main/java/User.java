@@ -107,10 +107,40 @@ public class User {
                 }
 
             }catch(Exception e){
-                System.out.println(e.toString());
+               System.out.println(e.toString());
             }
 
             return get;
+    }
+    
+    public static User getDoc(String username){
+        User get = new User();
+        try{
+         Connection con = DB_Connection.getConnection();
+                Statement stmt = con.createStatement();
+                String query = "SELECT * FROM doctors WHERE username = '"+username+"'";
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()){
+                    get.setUsername(username);
+                    get.setPassword(rs.getString("password"));
+                    get.setEmail(rs.getString("email"));
+                    get.setFirstname(rs.getString("first_name"));
+                    get.setLastname(rs.getString("last_name"));
+                    get.setBirthdate(rs.getString("birthday"));
+                    get.setGender(rs.getString("Sex"));
+                    get.setAmka(rs.getString("amka"));
+                    get.setCountry(rs.getString("country"));
+                    get.setCity(rs.getString("city"));
+                    get.setAddress(rs.getString("Address"));
+                    get.setTelephone(rs.getString("telephone"));
+                    get.setHeight(rs.getInt("height"));
+                    get.setHeight(rs.getInt("weight"));
+
+                }
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+        return get;
     }
     public String getUname(){
         return this.username;

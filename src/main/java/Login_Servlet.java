@@ -71,7 +71,7 @@ public class Login_Servlet extends HttpServlet {
                         System.out.println("Wrong Credentials");
                     }
                     response.setStatus(200);
-                    test = User.getUser(username);
+                    test = User.getDoc(username);
                     test.setType("doc");
 
                 }
