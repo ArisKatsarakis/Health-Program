@@ -7,28 +7,22 @@
         <form class = 'form-group' onsubmit="create_ren();return false;"  >
             <div class = "form-control" > 
                 <label for ="date"> Date of appointment</label>
-                <input type="date" class = "form-control" value = '1994-11-22' id = "date">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Hours
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dp">
-                        <a class="dropdown-item" href="#">08:30</a>
-                        <a class="dropdown-item" href="#">09:00</a>
-                        <a class="dropdown-item" href="#">10:00</a>
+                <input type="date" value = '1994-11-22' id = "date">
+                <div class = "form-row" id ="hour_table">
+                    <label class="form-control" for = "hours">Appointment's Time (format: hhmm)</label>
+                    <input class="form-control col-md-2" id="hour" type="number" min = "08" max = "20">:
+                    <input class="form-control col-md-2" id="min" type="number" min = "00" max = "59">
+                </div>
+                <div class = "form-row" > 
+                    <label  class = "col-md-4" for ="price">Price: </label>
+                    <input id = "price" type ="number" min = "10" max ="80" value ="50" class ="form-control col-md-6">€
+                    <div>
+                        <button type ="submit" class="btn-secondary">Create Rendevou</button>
+                    </div>
+                    <div class = "form-control"  id="apoint">
+                        <button type ="button" onclick = "show_ran()"> Show Randevouz</button>
                     </div>
                 </div>
-                <div class = "form-group col-md-12" > 
-                    <label  for ="price">Price: </label>
-                    <input id = "price" type ="text" value ="50" class ="form-control">€
-                </div>
-                <div>
-                    <button type ="submit" class="btn-secondary">Create Rendevou</button>
-                </div>
-                <div class = "form-control"  id="apoint">
-                    <button type ="button" onclick = "show_ran()"> Show Randevouz</button>
-                </div>
-            </div>
         </form>
     </body>
 </html>

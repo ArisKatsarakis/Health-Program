@@ -32,8 +32,8 @@ public class EditBloodTestTable {
         BloodTest btest = gson.fromJson(json, BloodTest.class);
         return btest;
     }
-    
-     public String bloodTestToJSON(BloodTest bt){
+     
+    public String bloodTestToJSON(BloodTest bt){
          Gson gson = new Gson();
 
         String json = gson.toJson(bt, BloodTest.class);

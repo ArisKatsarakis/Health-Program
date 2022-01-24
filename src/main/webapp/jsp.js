@@ -72,7 +72,8 @@ function create_ren() {
         data: {
             username: $("#username").text(),
             date: $("#date").val(),
-            price: $("#price").val()
+            price: $("#price").val(),
+            hour: $("#hour").val().toString() + ":" +$("#min").val().toString()
         },
         type: 'POST',
         success: function (data) {
@@ -90,21 +91,32 @@ function create_date() {
 
 }
 //create hours with var as int 
-function generate_hours() {
-    var time = "08:00";
-    for (let i = 0; i < 1; i++) {
-        //create multiple check boxes 
-        //create an appointment per_hour checked
-        
-    }
-}
+
 function show_ran() {
     $.ajax({
         url: 'ren',
         type: 'GET',
         data: {username: $("#username").text()},
         success: function (data) {
-            alert(data);
+            var obj = JSON.parse(data);
+            var ele = "<table class = 'table'>";
+            ele += "\n <thead> \n <tr> \n\
+            <th scope = 'col'>Doctor's Username: </th>\n\
+            <th scope = 'col'>Date:  </th>\n\
+            <th scope = 'col'>Price: </th>\n\
+             <th scope = 'col'>Status </th>\n\
+            </tr> </thead>";
+            ele += "<tbody> \n ";
+            for(x in obj){
+                ele += "<tr>";
+                ele+= "<th scope = 'row'>  "+ obj[x].doctor_info +"</th>";
+                ele += "<td>" + obj[x].date_time + "</td>";
+                ele += "<td>" + obj[x].price + "</td>";
+                ele += "<td>" + obj[x].status + "</td>";
+                ele += "</tr>";
+            }
+            ele += "</tbody>\n </table>";
+            $("#forms").append(ele);
         }
     });
 }
@@ -162,3 +174,47 @@ function get_bt(){
     });
 }
 
+function show_sel(){
+    $.ajax({
+        url: "change_ran",
+        type: "GET",
+        data: {username : $("#username").text() },
+        success: function(data){
+              var obj = JSON.parse(data);
+            var ele = "<table class = 'table'>";
+            ele += "\n <thead> \n <tr> \n\
+            <th scope = 'col'>Doctor's Username: </th>\n\
+            <th scope = 'col'>Patient's Username: </th>\n\
+            <th scope = 'col'>Date:  </th>\n\
+            <th scope = 'col'>Price: </th>\n\
+             <th scope = 'col'>Status </th>\n\
+            </tr> </thead>";
+            ele += "<tbody> \n ";
+            for(x in obj){
+                ele += "<tr>";
+                ele+= "<th scope = 'row'>"+ obj[x].doctor_info +"</th>";                               
+                ele += "<td>" + obj[x].user_info + "</td>";
+                ele += "<td>" + obj[x].date_time + "</td>";
+                ele += "<td>" + obj[x].price + "</td>";
+                ele += "<td>" + obj[x].status + "</td>";
+                ele += "</tr> \n";
+                ele += "<td>";
+                ele += "<button class = 'btn-primary' onclick = cancel("+obj[x].randevouz_id+") > Cancel </button>"
+                ele += "</td>";
+            }
+            ele += "</tbody>\n </table>";
+            $("#forms").append(ele);
+        }
+    });
+}
+
+function cancel(id){
+    $.ajax({
+        url: "change_ran",
+        type: "post",
+        data:{r_id: id},
+        success: function (data){
+            alert("Successfully Canceled !");
+        }
+    });
+} 

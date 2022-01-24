@@ -58,17 +58,28 @@ public class ren extends HttpServlet {
             ResultSet rs = stmt.executeQuery(query);
             System.out.println(query);
             response.setStatus(200);
-            while (rs.next()) {
-                Gson data = new Gson();
+            out.print("[");
+            rs.next();
+            Gson data = new Gson();
                 String ret ;
                 r.setDoctor_info(rs.getString("username_doc"));
-                r.setDate_time(rs.getString("day") + rs.getString("hour"));
-                r.setPrice(rs.getInt(rs.getInt("price")));
+                r.setDate_time(rs.getDate("day").toString()+ rs.getString("hour"));
+                r.setPrice(rs.getInt("price"));
+                r.setStatus(rs.getString("state"));
                 ret = data.toJson(r);
-                out.println(ret);
+                out.print(ret);
+            while (rs.next()) {
+                out.print(",");
+                Randevouz r1 = new Randevouz();
+                r1.setDoctor_info(rs.getString("username_doc"));
+                r1.setDate_time(rs.getDate("day").toString()  +" "+ rs.getString("hour"));
+                r1.setPrice(rs.getInt("price"));
+                r1.setStatus(rs.getString("state"));
+                ret = data.toJson(r1);
+                out.print(ret);
             }
             
-             
+             out.print("]");
             
             out.flush();
 
@@ -93,7 +104,9 @@ public class ren extends HttpServlet {
                 + "', 'null', '"
                 + request.getParameter("date")
                 + "',"
-                + "'08:00', 'open"
+                + "'"
+                + request.getParameter("hour")
+                + "', 'open"
                 + "',"
                 + request.getParameter("price")
                 + "); ";

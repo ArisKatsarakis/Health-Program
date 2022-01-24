@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author zaxariaskatsarakis
  */
-@WebServlet(urlPatterns = {"/change_ran"})
+@WebServlet(name = "change_ran", value = "/change_ran")
 public class change_ran extends HttpServlet {
 
     /**
@@ -38,7 +39,7 @@ public class change_ran extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet change_ran</title>");            
+            out.println("<title>Servlet change_ran</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet change_ran at " + request.getContextPath() + "</h1>");
@@ -62,10 +63,10 @@ public class change_ran extends HttpServlet {
         //Get Scheduled Randevouz 
         String query = "select * from rendevouz where username_doc = '"
                 + request.getParameter("username")
-                + "', state = 'selected' ;"
-               ;
+                + "' and state = 'selected' ;";
         PrintWriter out = response.getWriter();
-        try{
+        try {
+            System.out.println(query);
             Connection con = DB_Connection.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -73,14 +74,31 @@ public class change_ran extends HttpServlet {
             out.print("[");
             Randevouz ra = new Randevouz();
             ra.setRandevouz_id(rs.getInt("id"));
-            ra.setDate_time(rs.getDate("day").toString() + rs.getInt( "hour"));
+            ra.setDate_time(rs.getDate("day").toString() + rs.getString("hour"));
             ra.setDoctor_info(rs.getString("username_doc"));
             ra.setUser_info(rs.getString("username_pat"));
             ra.setPrice(rs.getInt("price"));
-            
-        }catch(Exception e){
+            ra.setStatus(rs.getString("state"));
+            Gson data = new Gson();
+             String ret = data.toJson(ra);
+            out.print(ret);
+            while (rs.next()) {
+                out.print(",");
+                Randevouz rz = new Randevouz();
+                rz.setRandevouz_id(rs.getInt("id"));
+                rz.setDate_time(rs.getDate("day").toString() + rs.getString("hour"));
+                rz.setDoctor_info(rs.getString("username_doc"));
+                rz.setUser_info(rs.getString("username_pat"));
+                rz.setPrice(rs.getInt("price"));
+                rz.setStatus(rs.getString("state"));
+                ret = data.toJson(rz);
+                out.print(ret);
+            }
+            out.print("]");
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
+       out.flush();
     }
 
     /**
@@ -94,7 +112,17 @@ public class change_ran extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Change Cancel Randevouz 
+        String query = "update rendevouz set state = 'canceled' where id = '"
+                + request.getParameter("r_id")
+                + "';";
+        try{
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.execute(query);
+            
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
     }
 
     /**
