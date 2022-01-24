@@ -62,7 +62,7 @@ public class ren extends HttpServlet {
                 Gson data = new Gson();
                 String ret ;
                 r.setDoctor_info(rs.getString("username_doc"));
-                r.setDate_time(rs.getString("date") + rs.getString("hour"));
+                r.setDate_time(rs.getString("day") + rs.getString("hour"));
                 r.setPrice(rs.getInt(rs.getInt("price")));
                 ret = data.toJson(r);
                 out.println(ret);
@@ -88,7 +88,7 @@ public class ren extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String q = "insert into rendevouz values ( '"
+        String q = "insert into rendevouz (username_doc, username_pat, day, hour, state, price) values ( '"
                 + request.getParameter("username")
                 + "', 'null', '"
                 + request.getParameter("date")
@@ -108,7 +108,7 @@ public class ren extends HttpServlet {
             out.flush();
 //              /check the query
         } catch (Exception e) {
-
+               System.out.print(e.toString());
         }
 
     }

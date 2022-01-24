@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author zaxariaskatsarakis
  */
-@WebServlet(name = "book_ran" ,value = "/book_ran" )
+@WebServlet(name = "book_ran", value = "/book_ran")
 public class book_ran extends HttpServlet {
 
     /**
@@ -39,7 +39,7 @@ public class book_ran extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet book_ran</title>");            
+            out.println("<title>Servlet book_ran</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet book_ran at " + request.getContextPath() + "</h1>");
@@ -60,37 +60,41 @@ public class book_ran extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         String query = "select * from rendevouz where state = 'open' ;";
+        String query = "select * from rendevouz where state = 'open' ;";
         PrintWriter out = response.getWriter();
-        try{
+        try {
             Connection con = DB_Connection.getConnection();
-            Statement stmt  = con.createStatement();
+            Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             out.print("[");
             rs.next();
-                Randevouz ra = new Randevouz();
-                ra.setDoctor_info(rs.getString("username_doc"));
-                ra.setDate_time(rs.getString("date") + " " + rs.getString("hour"));
-                ra.setPrice(rs.getInt("price"));
-                ra.setStatus(rs.getString("state"));
-                Gson data = new Gson();
-                String ret = data.toJson(ra);
-                out.print(ret+ ",");
-                
-            rs.next();
-            Randevouz rz = new Randevouz();
+            Randevouz ra = new Randevouz();
+            ra.setRandevouz_id(rs.getInt("id"));
+            ra.setDoctor_info(rs.getString("username_doc"));
+            ra.setDate_time(rs.getString("day") + " " + rs.getString("hour"));
+            ra.setPrice(rs.getInt("price"));
+            ra.setStatus(rs.getString("state"));
+            Gson data = new Gson();
+            String ret = data.toJson(ra);
+            out.print(ret );
+
+            while (rs.next()) {
+                out.print(",");
+                Randevouz rz = new Randevouz();
+                rz.setRandevouz_id(rs.getInt("id"));
                 rz.setDoctor_info(rs.getString("username_doc"));
-                rz.setDate_time(rs.getString("date") + " " + rs.getString("hour"));
+                rz.setDate_time(rs.getString("day") + " " + rs.getString("hour"));
                 rz.setPrice(rs.getInt("price"));
-                
-                 ret = data.toJson(rz);
+                ret = data.toJson(rz);
                 out.print(ret);
+            }
             out.print("]");
-        }catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println(e.toString());
-            
+
         }
         out.flush();
     }
@@ -106,7 +110,23 @@ public class book_ran extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+        PrintWriter out = response.getWriter();
+        String query = "update rendevouz set "
+                + "state = 'selected', "
+                + "username_pat = '"
+                + request.getParameter("username")
+                +"' where id = "
+                + request.getParameter("id")
+                + ";";
+       try{
+           Connection con = DB_Connection.getConnection();
+           Statement stmt = con.createStatement();
+           stmt.execute(query);
+           System.out.println("Appointment Booked Successfully !");
+       }catch(Exception e){
+           System.out.println(e.toString());
+       }
+ 
     }
 
     /**

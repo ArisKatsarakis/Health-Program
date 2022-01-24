@@ -113,15 +113,18 @@ function show_ran() {
 
 
 function book_ran() {
+    //create new randevouz table with id 
+    //finish randevouz 
+
     $.ajax({
         url: "book_ran",
         type: 'get',
         success: function (data) {
             alert(data);
             var obj = $.parseJSON(data);
-            
+//            for(var ob in obj)
             $("#data").append("  <div class='form-check'>" +
-                    "<input class= 'form-check-input' type='checkbox' value='"+obj[0].doctor_info+"' id='flexCheckDefault'>"+
+                    "<input class= 'form-check-input' type='checkbox' value='"+obj[0].randevouz_id+"' id='flexCheckDefault'>"+
             "<label   class='form-check-label' for='flexCheckDefault'>" +
                    "Username: "+ obj[0].doctor_info + " Price: " + obj[0].price + " State: " + obj[0].status +
                     "  </label>"+
@@ -133,7 +136,16 @@ function book_ran() {
 
 function book_it(){
     alert($("#flexCheckDefault").val());
-    //book the randevouz according the checked value 
+    var pat = $("#flexCheckDefault").val();
+    $.ajax({
+        url: 'book_ran',
+        type: 'POST',
+        data: {username: $("#username").text(), id : pat},
+        success: function(data){
+           alert("Randevouz Booked")
+        }
+    }
+    );
 }
 
 
@@ -149,3 +161,4 @@ function get_bt(){
             }
     });
 }
+
