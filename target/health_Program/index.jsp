@@ -17,6 +17,7 @@
             <h1 href="index.html"> Welcome to our HY 359 API </h1>
             <button onclick = "Show_Reg()" class = "btn btn-light">Register</button>
             <button onclick= "Show_log()" class = "btn btn-dark">Log in</button>
+            
         </header>
         <h2 id="username">
 

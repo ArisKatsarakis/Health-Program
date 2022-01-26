@@ -73,7 +73,7 @@ function create_ren() {
             username: $("#username").text(),
             date: $("#date").val(),
             price: $("#price").val(),
-            hour: $("#hour").val().toString() + ":" +$("#min").val().toString()
+            hour: $("#hour").val().toString() + ":" + $("#min").val().toString()
         },
         type: 'POST',
         success: function (data) {
@@ -107,9 +107,9 @@ function show_ran() {
              <th scope = 'col'>Status </th>\n\
             </tr> </thead>";
             ele += "<tbody> \n ";
-            for(x in obj){
+            for (x in obj) {
                 ele += "<tr>";
-                ele+= "<th scope = 'row'>  "+ obj[x].doctor_info +"</th>";
+                ele += "<th scope = 'row'>  " + obj[x].doctor_info + "</th>";
                 ele += "<td>" + obj[x].date_time + "</td>";
                 ele += "<td>" + obj[x].price + "</td>";
                 ele += "<td>" + obj[x].status + "</td>";
@@ -136,71 +136,73 @@ function book_ran() {
             var obj = $.parseJSON(data);
 //            for(var ob in obj)
             $("#data").append("  <div class='form-check'>" +
-                    "<input class= 'form-check-input' type='checkbox' value='"+obj[0].randevouz_id+"' id='flexCheckDefault'>"+
-            "<label   class='form-check-label' for='flexCheckDefault'>" +
-                   "Username: "+ obj[0].doctor_info + " Price: " + obj[0].price + " State: " + obj[0].status +
-                    "  </label>"+
-            " </div> " );
+                    "<input class= 'form-check-input' type='checkbox' value='" + obj[0].randevouz_id + "' id='flexCheckDefault'>" +
+                    "<label   class='form-check-label' for='flexCheckDefault'>" +
+                    "Username: " + obj[0].doctor_info + " Price: " + obj[0].price + " State: " + obj[0].status +
+                    "  </label>" +
+                    " </div> ");
             $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it()' >Book it! </button>");
         }
     });
 }
 
-function book_it(){
+function book_it() {
     alert($("#flexCheckDefault").val());
     var pat = $("#flexCheckDefault").val();
     $.ajax({
         url: 'book_ran',
         type: 'POST',
-        data: {username: $("#username").text(), id : pat},
-        success: function(data){
-           alert("Randevouz Booked")
+        data: {username: $("#username").text(), id: pat},
+        success: function (data) {
+            alert("Randevouz Booked")
         }
     }
     );
 }
 
 
-function get_bt(){
+function get_bt() {
     $.ajax({
-            url: "Cre_bt",
-            type: 'GET',
-            success: function(data){
-                //append the blood test
-                var json = $.parseJSON(data);
-                $("#data").append("Successfully Created\n");
-                
-            }
+        url: "Cre_bt",
+        type: 'GET',
+        success: function (data) {
+            //append the blood test
+            var json = $.parseJSON(data);
+            $("#data").append("Successfully Created\n");
+
+        }
     });
 }
 
-function show_sel(){
+function show_sel() {
     $.ajax({
         url: "change_ran",
         type: "GET",
-        data: {username : $("#username").text() },
-        success: function(data){
-              var obj = JSON.parse(data);
+        data: {username: $("#username").text()},
+        success: function (data) {
+            var obj = JSON.parse(data);
             var ele = "<table class = 'table'>";
             ele += "\n <thead> \n <tr> \n\
             <th scope = 'col'>Doctor's Username: </th>\n\
             <th scope = 'col'>Patient's Username: </th>\n\
             <th scope = 'col'>Date:  </th>\n\
             <th scope = 'col'>Price: </th>\n\
-             <th scope = 'col'>Status </th>\n\
+             <th scope = 'col'>Status: </th>\n\
+            <th scope = 'col'>Actions: </th>\n\
             </tr> </thead>";
             ele += "<tbody> \n ";
-            for(x in obj){
+            for (x in obj) {
                 ele += "<tr>";
-                ele+= "<th scope = 'row'>"+ obj[x].doctor_info +"</th>";                               
+                ele += "<th scope = 'row'>" + obj[x].doctor_info + "</th>";
                 ele += "<td>" + obj[x].user_info + "</td>";
                 ele += "<td>" + obj[x].date_time + "</td>";
                 ele += "<td>" + obj[x].price + "</td>";
                 ele += "<td>" + obj[x].status + "</td>";
-                ele += "</tr> \n";
                 ele += "<td>";
-                ele += "<button class = 'btn-primary' onclick = cancel("+obj[x].randevouz_id+") > Cancel </button>"
+                ele += "<button class = 'btn-primary' onclick = cancel(" + obj[x].randevouz_id + ") > Cancel </button>"
                 ele += "</td>";
+                ele += "</tr> ";
+
             }
             ele += "</tbody>\n </table>";
             $("#forms").append(ele);
@@ -208,13 +210,13 @@ function show_sel(){
     });
 }
 
-function cancel(id){
+function cancel(id) {
     $.ajax({
         url: "change_ran",
         type: "post",
-        data:{r_id: id},
-        success: function (data){
+        data: {r_id: id},
+        success: function (data) {
             alert("Successfully Canceled !");
         }
     });
-} 
+}
