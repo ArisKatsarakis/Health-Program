@@ -220,3 +220,52 @@ function cancel(id) {
         }
     });
 }
+
+function show_bt() {
+    $.ajax({
+        url: "Show_bt",
+        type: "GET",
+        data: {username: $("#username").text()},
+        success: function (data) {
+            var obj = JSON.parse(data);
+            for (x in obj) {
+                var collapse_button = "<button class='btn btn-primary' type='button' data-toggle='collapse' data-target='#" + obj[x].bloodtest_id + "' \n\
+                aria-expanded='false' aria-controls='" + obj[x].bloodtest_id + "'> " + obj[x].test_date + " </button> \n";
+                collapse_button += "<div class ='collapse' id = '" + obj[x].bloodtest_id + "'> \n";
+                collapse_button += "<div class = 'card card-body'> \n";
+                collapse_button += "\n <table class = 'table'> \n<thead> <h2>AMKA: "+obj[0].amka+" Medical Center: "+obj[0].medical_center+" </h2> \n <tr> \n\
+                <th scope = 'col'>Attribute: </th>\n\
+                <th scope = 'col'> Value: </th>\n\
+                <th scope = 'col'> Level: </th>\n\
+                </tr> </thead> \n <tbody> \n";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Iron </td>";
+                collapse_button += "<td> "+obj[x].iron+"</td>";
+                collapse_button += "<td> "+obj[x].iron_level+"</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Cholesterol </td>";
+                collapse_button += "<td> "+obj[x].cholesterol+"</td>";
+                collapse_button += "<td> "+obj[x].cholesterol_level+"</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Blood Sugar </td>";
+                collapse_button += "<td> "+obj[x].blood_sugar+"</td>";
+                collapse_button += "<td> "+obj[x].blood_sugar_level+"</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Vitamin D3 </td>";
+                collapse_button += "<td> "+obj[x].vitamin_d3+"</td>";
+                collapse_button += "<td> "+obj[x].vitamin_d3_level+"</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Vitamin B12 </td>";
+                collapse_button += "<td> "+obj[x].vitamin_b12+"</td>";
+                collapse_button += "<td> "+obj[x].vitamin_b12_level+"</td>";
+                collapse_button += "</tr>";
+                collapse_button += "\n</table> </div> \n </div> \n";
+                $("#data").append(collapse_button);
+            }
+        }
+    });
+}
