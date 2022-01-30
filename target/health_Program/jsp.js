@@ -233,38 +233,74 @@ function show_bt() {
                 aria-expanded='false' aria-controls='" + obj[x].bloodtest_id + "'> " + obj[x].test_date + " </button> \n";
                 collapse_button += "<div class ='collapse' id = '" + obj[x].bloodtest_id + "'> \n";
                 collapse_button += "<div class = 'card card-body'> \n";
-                collapse_button += "\n <table class = 'table'> \n<thead> <h2>AMKA: "+obj[0].amka+" Medical Center: "+obj[0].medical_center+" </h2> \n <tr> \n\
+                collapse_button += "\n <table class = 'table'> \n<thead> <h2>AMKA: " + obj[0].amka + " Medical Center: " + obj[0].medical_center + " </h2> \n <tr> \n\
                 <th scope = 'col'>Attribute: </th>\n\
                 <th scope = 'col'> Value: </th>\n\
                 <th scope = 'col'> Level: </th>\n\
                 </tr> </thead> \n <tbody> \n";
                 collapse_button += "<tr>";
                 collapse_button += "<td> Iron </td>";
-                collapse_button += "<td> "+obj[x].iron+"</td>";
-                collapse_button += "<td> "+obj[x].iron_level+"</td>";
+                collapse_button += "<td> " + obj[x].iron + "</td>";
+                collapse_button += "<td> " + obj[x].iron_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "<tr>";
                 collapse_button += "<td> Cholesterol </td>";
-                collapse_button += "<td> "+obj[x].cholesterol+"</td>";
-                collapse_button += "<td> "+obj[x].cholesterol_level+"</td>";
+                collapse_button += "<td> " + obj[x].cholesterol + "</td>";
+                collapse_button += "<td> " + obj[x].cholesterol_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "<tr>";
                 collapse_button += "<td> Blood Sugar </td>";
-                collapse_button += "<td> "+obj[x].blood_sugar+"</td>";
-                collapse_button += "<td> "+obj[x].blood_sugar_level+"</td>";
+                collapse_button += "<td> " + obj[x].blood_sugar + "</td>";
+                collapse_button += "<td> " + obj[x].blood_sugar_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "<tr>";
                 collapse_button += "<td> Vitamin D3 </td>";
-                collapse_button += "<td> "+obj[x].vitamin_d3+"</td>";
-                collapse_button += "<td> "+obj[x].vitamin_d3_level+"</td>";
+                collapse_button += "<td> " + obj[x].vitamin_d3 + "</td>";
+                collapse_button += "<td> " + obj[x].vitamin_d3_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "<tr>";
                 collapse_button += "<td> Vitamin B12 </td>";
-                collapse_button += "<td> "+obj[x].vitamin_b12+"</td>";
-                collapse_button += "<td> "+obj[x].vitamin_b12_level+"</td>";
+                collapse_button += "<td> " + obj[x].vitamin_b12 + "</td>";
+                collapse_button += "<td> " + obj[x].vitamin_b12_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "\n</table> </div> \n </div> \n";
                 $("#data").append(collapse_button);
+            }
+        }
+    });
+}
+
+function show_messages() {
+    $.ajax({
+        url: "email",
+        data: {username: $("#username").text()},
+        type: "GET",
+        success: function (data) {
+            var obj = JSON.parse(data);
+            var html ;
+            if (obj[0].username_pat === $("#username").text()) {
+                html = "<div class = 'container-fluid'>";
+                for (x in obj) {
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10' >  From: " + obj[x].username_doc;
+                    html += "  "+ obj[x].subject;
+                    html+= "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
+<button type = 'button' class = 'btn-danger'>  delete </button>                  \n\
+</div> \n </div";
+                    
+                }
+                $("#forms").append(html);
+            }else{
+                html = "<div class = 'container-fluid'>";
+                for (x in obj) {
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10'> From: " + obj[x].username_pat;
+                    html += "  "+ obj[x].subject;
+                    html+= "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
+<button type = 'button' class = 'btn-danger'>delete </button> </div> \n ";
+                    
+                }
+                html += "</div>";
+                html += "\n <div id = 'index'> </div>";
+                $("#forms").append(html);
             }
         }
     });

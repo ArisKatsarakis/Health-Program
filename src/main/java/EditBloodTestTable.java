@@ -148,4 +148,5 @@ public class EditBloodTestTable {
             Logger.getLogger(EditBloodTestTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 }

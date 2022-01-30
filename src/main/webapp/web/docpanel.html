@@ -5,7 +5,7 @@
         <script>
             function show_form() {
                 $("#forms").load("web/RendForm.html");
-                        
+
             }
         </script>
     </head>
@@ -17,7 +17,8 @@
             <button  onclick = "get_history()" class="btn-primary"> Show Patients History</button>
             <button onclick = "alter_ren()" class="btn-primary"> Change / Cancel Rendevouz</button>
             <button onclick =  "add_data()" class="btn-primary"> New Data for Patient</button>
-           
+            <button class ="btn-primary" id ="messages" onclick="show_messages()"> Messages</button>
+
 
         </div>
     </body>
