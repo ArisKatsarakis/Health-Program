@@ -12,8 +12,8 @@ public class register extends HttpServlet {
         PrintWriter out = response.getWriter();
         User new_user = new User();
         new_user.setUsername(request.getParameter("uname"));
-        new_user.setEmail(request.getParameter("email"));
-        new_user.setPassword(request.getParameter("pass"));
+        new_user.setEmail(request.getParameter("email")); 
+       new_user.setPassword(request.getParameter("pass"));
         new_user.setGender(request.getParameter("male"));
         new_user.setFirstname(request.getParameter("fname"));
         new_user.setLastname(request.getParameter("lname" ));

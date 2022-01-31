@@ -270,38 +270,85 @@ function show_bt() {
     });
 }
 
-function show_messages() {
+function show_mess_panel(){
+    $("#forms").empty();
+    $("#forms").load("web/mail.html");
+}
+function show_messages(type) {
+ 
     $.ajax({
         url: "email",
-        data: {username: $("#username").text()},
+        data: {username: $("#username").text(),  type: type},
         type: "GET",
         success: function (data) {
             var obj = JSON.parse(data);
-            var html ;
-            if (obj[0].username_pat === $("#username").text()) {
+            var html;
+            if (type === 'inbox') {
                 html = "<div class = 'container-fluid'>";
                 for (x in obj) {
-                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10' >  From: " + obj[x].username_doc;
-                    html += "  "+ obj[x].subject;
-                    html+= "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
-<button type = 'button' class = 'btn-danger'>  delete </button>                  \n\
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10' >  From: " + obj[x].from;
+                    html += "   Subject:  " + obj[x].subject;
+                    html += "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
+<button type = 'button' onclick = 'del_messages(" + obj[x].id + ")'class = 'btn-danger'>  delete </button>                  \n\
 </div> \n </div";
-                    
+
                 }
                 $("#forms").append(html);
-            }else{
+            } else {
                 html = "<div class = 'container-fluid'>";
                 for (x in obj) {
-                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10'> From: " + obj[x].username_pat;
-                    html += "  "+ obj[x].subject;
-                    html+= "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
-<button type = 'button' class = 'btn-danger'>delete </button> </div> \n ";
-                    
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10'> To: " + obj[x].to;
+                    html += "   Subject " + obj[x].subject;
+                    html += "</p> \n <button type = 'button' onclick = 'send_message()' class = 'btn-secondary'> Reply </button> \n \n\
+<button type = 'button' onclick = 'del_messages(" + obj[x].id + ")' class = 'btn-danger'>delete  </button> </div> \n ";
+
                 }
                 html += "</div>";
                 html += "\n <div id = 'index'> </div>";
                 $("#forms").append(html);
             }
+        },
+        error: function(request, status, error) {
+            alert(request.responseText);
         }
     });
+}
+
+function del_messages(id) {
+    $.ajax({
+        url: "email",
+        type: "delete",
+        data: {num: "1"},
+        success: function (data) {
+            alert(id);
+            alert("Message Deleted !");
+            $("#forms").empty();
+            show_messages();
+        }
+    });
+}
+
+function mess_form(){
+     $("#forms").empty();
+    //make a html form for reply 
+    $("#forms").load("web/reply.html");
+   
+}  
+function send() {
+     $("#from").val($("#username").text());
+    $("#from").hide();
+   var xhr = new XMLHttpRequest();
+   
+   xhr.onload = function(){
+       if(xhr.readyState === 4 && xhr.status === 200){
+           alert(xhr.rersopseText)
+       }
+       
+   };
+      var data = $("#send").serialize();
+
+   xhr.open("POST", "email");
+   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+   xhr.send(data);
+
 }

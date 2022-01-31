@@ -60,9 +60,10 @@ public class Email extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get the messages of the user
-        //check if doctor or patient first
-        String query = "select * from message where username_pat ='"
+        //get received messages
+        System.out.println(request.getParameter("type"));
+        if("inbox".equals(request.getParameter("type"))){
+        String query = "select * from email where receiver ='"
                 + request.getParameter("username")
                 + "';";
         PrintWriter out = response.getWriter();
@@ -70,46 +71,81 @@ public class Email extends HttpServlet {
             Connection con = DB_Connection.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            if (!rs.next()) {
-                System.out.println("Its a Doctor");
-                query = "select * from message where username_doc = '"
-                        + request.getParameter("username")
-                        + "';";
-                rs.close();
-                rs = stmt.executeQuery(query);
-                if(!rs.next()){
-                    out.print("You have no messages");
-                }
-            }
-            out.print("[");
             mail m1 = new mail();
-            m1.set_id(rs.getInt("id"));
+
+            rs.next();
+            out.print("[");
+            m1.set_From(rs.getString("sender"));
             m1.set_Subject(rs.getString("subject"));
             m1.set_Text(rs.getString("text"));
-            m1.set_Username_doc(rs.getString("username_doc"));
-            m1.set_Username_pat(rs.getString("username_pat"));
+            m1.set_id(rs.getInt("id"));
+            m1.set_To(request.getParameter("username"));
             Gson data = new Gson();
             String ret = data.toJson(m1);
             out.print(ret);
             while (rs.next()) {
                 out.print(",");
                 mail m2 = new mail();
-                m2.set_id(rs.getInt("id"));
+                m2.set_From(rs.getString("sender"));
                 m2.set_Subject(rs.getString("subject"));
                 m2.set_Text(rs.getString("text"));
-                m2.set_Username_doc(rs.getString("username_doc"));
-                m2.set_Username_pat(rs.getString("username_pat"));
+                m2.set_id(rs.getInt("id"));
+                m2.set_To(request.getParameter("username"));
                 ret = data.toJson(m2);
                 out.print(ret);
             }
             out.print("]");
         } catch (Exception e) {
             System.out.println(e.toString());
+            response.setStatus(404);
+            out.print("No Messages was Found!");
         }
+      }else{
+        String query = "select * from email where sender ='"
+                + request.getParameter("username")
+                + "';";
+        PrintWriter out = response.getWriter();
+        System.out.println(query);
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            mail m1 = new mail();
+
+            rs.next();
+            out.print("[");
+            m1.set_From(request.getParameter("username"));
+            m1.set_Subject(rs.getString("subject"));
+            m1.set_Text(rs.getString("text"));
+            m1.set_id(rs.getInt("id"));
+            m1.set_To(rs.getString("receiver"));
+            Gson data = new Gson();
+            String ret = data.toJson(m1);
+            out.print(ret);
+            while (rs.next()) {
+                out.print(",");
+                mail m2 = new mail();
+                m2.set_From(request.getParameter("username"));
+                m2.set_Subject(rs.getString("subject"));
+                m2.set_Text(rs.getString("text"));
+                m2.set_id(rs.getInt("id"));
+                m2.set_To(rs.getString("receiver"));
+                ret = data.toJson(m2);
+                out.print(ret);
+            }
+            out.print("]");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            response.setStatus(404);
+            out.print("No Messages was Found!");
+        }
+      
+      }
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      *
      * @param request servlet request
      * @param response servlet response
@@ -119,7 +155,28 @@ public class Email extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String query = "insert into email values \n ("
+                + "'" + request.getParameter("from") + "',"
+                + "'" + request.getParameter("to") + "',"
+                + "'" + request.getParameter("sjc") + "',"
+                + "'" + request.getParameter("txt") + "',"
+                + "null );";
+        System.out.println(query);
+        PrintWriter out = response.getWriter();
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.execute(query);
+            response.setStatus(200);
+            out.println("Message Send Successfully!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            out.println("Message Send Failed!");
+            response.setStatus(500);
+
+        }
+
+        out.flush();
     }
 
     /**
@@ -128,8 +185,22 @@ public class Email extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        String query = "delete from message where id = "
+                + request.getParameter("num")
+                + ";";
+        System.out.println(request.getParameter("num"));
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.execute(query);
+            System.out.println("Message Deleted !");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
 
 }

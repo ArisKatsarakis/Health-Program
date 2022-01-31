@@ -8,19 +8,19 @@
  * @author zaxariaskatsarakis
  */
 public class mail {
-    private String username_doc;
-    private String username_pat;
+    private String from;
+    private String to;
     private String subject;
     private String text;
     private int id;
     
-    public void set_Username_doc(String doc){
-        this.username_doc = doc;
+    public void set_From(String doc){
+        this.from = doc;
         
     }
     
-    public void set_Username_pat(String pat){
-        this.username_pat = pat;
+    public void set_To(String pat){
+        this.to = pat;
     }
     
     public void set_Subject(String sub){
@@ -39,9 +39,9 @@ public class mail {
         return this.id;
     }
     
-    public String get_Username_doC(){ return this.username_doc;}
+    public String get_from(){ return this.from;}
     
-    public String get_Username_pat(){ return this.username_pat;}
+    public String get_to(){ return this.to;}
     
     public String get_Subject(){return this.subject;}
      
