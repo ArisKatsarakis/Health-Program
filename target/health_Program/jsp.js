@@ -1,3 +1,4 @@
+
 function  Show_Reg() {
     $("#content").load("web/form.html");
 }
@@ -127,29 +128,28 @@ function show_ran() {
 function book_ran() {
     //create new randevouz table with id 
     //finish randevouz 
-
+    $("#data").empty();
     $.ajax({
         url: "book_ran",
         type: 'get',
         success: function (data) {
-            alert(data);
+            
             var obj = $.parseJSON(data);
-            for(var ob in obj){
-            $("#data").append("  <div class='form-check'>" +
-                    "<input class= 'form-check-input' type='checkbox' value='" + obj[0].randevouz_id + "' id='flexCheckDefault'>" +
-                    "<label   class='form-check-label' for='flexCheckDefault'>" +
-                    "Username: " + obj[0].doctor_info + " Price: " + obj[0].price + " State: " + obj[0].status +
-                    "  </label>" +
-                    " </div> ");
-            $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it()' >Book it! </button>");
-        }
+            for (x in obj) {
+                $("#data").append("  <div class='form-check'>" +
+                        "<input class= 'form-check-input' type='checkbox' value='" + obj[x].randevouz_id + "' name='"+obj[x].randevouz_id+"'>" +
+                        "<label   class='form-check-label' for='"+obj[x].randevouz_id+"'>" +
+                        "Doctor Info: " + obj[x].doctor_info + " Price: " + obj[x].price + " State: " + obj[x].status + " Date: " +obj[x].date_time +
+                        "  </label>" +
+                        " </div> ");
+                $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it("+obj[x].randevouz_id+")' >Book it! </button>");
+            }
         }
     });
 }
 
-function book_it() {
-    alert($("#flexCheckDefault").val());
-    var pat = $("#flexCheckDefault").val();
+function book_it(pat) {
+    
     $.ajax({
         url: 'book_ran',
         type: 'POST',
@@ -166,6 +166,7 @@ function get_bt() {
     $.ajax({
         url: "Cre_bt",
         type: 'GET',
+        data: {username: $("#username").text()},
         success: function (data) {
             //append the blood test
             var json = $.parseJSON(data);
@@ -176,6 +177,7 @@ function get_bt() {
 }
 
 function show_sel() {
+    $("#forms").empty();
     $.ajax({
         url: "change_ran",
         type: "GET",
@@ -200,7 +202,8 @@ function show_sel() {
                 ele += "<td>" + obj[x].price + "</td>";
                 ele += "<td>" + obj[x].status + "</td>";
                 ele += "<td>";
-                ele += "<button class = 'btn-primary' onclick = cancel(" + obj[x].randevouz_id + ") > Cancel </button>"
+                ele += "<button class = 'btn-primary' onclick = cancel(" + obj[x].randevouz_id + ") > Cancel </button>";
+                ele += "<button class = 'btn-primary' onclick = done_ren(" + obj[x].randevouz_id + ") > Done </button>"
                 ele += "</td>";
                 ele += "</tr> ";
 
@@ -218,18 +221,21 @@ function cancel(id) {
         data: {r_id: id},
         success: function (data) {
             alert("Successfully Canceled !");
-            
+
         }
     });
 }
 
 function show_bt() {
+    $("#data").empty();
+
     $.ajax({
         url: "Show_bt",
         type: "GET",
         data: {username: $("#username").text()},
         success: function (data) {
             var obj = JSON.parse(data);
+            var cholesterol = [];
             for (x in obj) {
                 var collapse_button = "<button class='btn btn-primary' type='button' data-toggle='collapse' data-target='#" + obj[x].bloodtest_id + "' \n\
                 aria-expanded='false' aria-controls='" + obj[x].bloodtest_id + "'> " + obj[x].test_date + " </button> \n";
@@ -266,21 +272,32 @@ function show_bt() {
                 collapse_button += "<td> " + obj[x].vitamin_b12_level + "</td>";
                 collapse_button += "</tr>";
                 collapse_button += "\n</table> </div> \n </div> \n";
+                var item = {};
+                item ["date"] = obj[x].test_date;
+                item ["value"] = obj[x].cholesterol;
+                item ["level"] = obj[x].cholesterol_level;
+                cholesterol.push(item);
                 $("#data").append(collapse_button);
             }
+            console.log(cholesterol);
+
+            var chars = "<div class= 'form-control' id = 'charts'><h2> Charts</h2>\n\n\
+<button class = 'btn-primary' onclick= 'show_charts ("+data+")'> Show Charts </button> \n </div>";
+            $("#data").append(chars);
+//            show_charts(cholesterol);
         }
     });
 }
 
-function show_mess_panel(){
+function show_mess_panel() {
     $("#forms").empty();
     $("#forms").load("web/mail.html");
 }
 function show_messages(type) {
- 
+
     $.ajax({
         url: "email",
-        data: {username: $("#username").text(),  type: type},
+        data: {username: $("#username").text(), type: type},
         type: "GET",
         success: function (data) {
             var obj = JSON.parse(data);
@@ -310,7 +327,7 @@ function show_messages(type) {
                 $("#forms").append(html);
             }
         },
-        error: function(request, status, error) {
+        error: function (request, status, error) {
             alert(request.responseText);
         }
     });
@@ -330,27 +347,141 @@ function del_messages(id) {
     });
 }
 
-function mess_form(){
-     $("#forms").empty();
+function mess_form() {
+    $("#forms").empty();
     //make a html form for reply 
     $("#forms").load("web/reply.html");
-   
-}  
-function send() {
-     $("#from").val($("#username").text());
-    $("#from").hide();
-   var xhr = new XMLHttpRequest();
-   
-   xhr.onload = function(){
-       if(xhr.readyState === 4 && xhr.status === 200){
-           alert(xhr.rersopseText)
-       }
-       
-   };
-      var data = $("#send").serialize();
 
-   xhr.open("POST", "email");
-   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-   xhr.send(data);
+}
+function send() {
+    $("#from").val($("#username").text());
+    $("#from").hide();
+    var xhr = new XMLHttpRequest();
+
+    xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert(xhr.rersopseText)
+        }
+
+    };
+    var data = $("#send").serialize();
+
+    xhr.open("POST", "email");
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(data);
+
+}
+
+function show_doc() {
+    var address;
+    $.ajax({
+        url: "Login_Servlet",
+        type: "POST",
+        data: {uname: $("#username").text(), pass: "123"},
+        success: function (data) {
+            var obj = JSON.parse(data);
+            address = obj;
+        }
+    });
+
+}
+
+function done_ren(id) {
+    $.ajax({
+        url: "Show_History",
+        type: "GET",
+        data: {r_id: id},
+        success: function (data) {
+            alert("Rendevouz Successfully Done!");
+
+        }
+    });
+}
+
+function show_history() {
+    $.ajax({
+        url: "Show_History",
+        type: "POST",
+        data: {username: $("#username").text()},
+        success: function (data) {
+            var obj = JSON.parse(data);
+            var amka = obj[0].amka;
+            $("#forms").append(" <div> \n <h2 class= 'form-control'  >" + amka + "</h2> \n");
+
+            for (x in obj) {
+                if (amka !== obj[x].amka) {
+                    amka = obj[x].amka;
+                    $("#forms").append("</div> \n <div> \n <h2 class= 'form-control'  >" + amka + "</h2> \n");
+                }
+                var collapse_button = "<button class='btn btn-primary' type='button' data-toggle='collapse' data-target='#" + obj[x].bloodtest_id + "' \n\
+                aria-expanded='false' aria-controls='" + obj[x].bloodtest_id + "'> " + obj[x].test_date + " </button> \n";
+                collapse_button += "<div class ='collapse' id = '" + obj[x].bloodtest_id + "'> \n";
+                collapse_button += "<div class = 'card card-body'> \n";
+                collapse_button += "\n <table class = 'table'> \n<thead> <h2>AMKA: " + obj[0].amka + " Medical Center: " + obj[0].medical_center + " </h2> \n <tr> \n\
+                <th scope = 'col'>Attribute: </th>\n\
+                <th scope = 'col'> Value: </th>\n\
+                <th scope = 'col'> Level: </th>\n\
+                </tr> </thead> \n <tbody> \n";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Iron </td>";
+                collapse_button += "<td> " + obj[x].iron + "</td>";
+                collapse_button += "<td> " + obj[x].iron_level + "</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Cholesterol </td>";
+                collapse_button += "<td> " + obj[x].cholesterol + "</td>";
+                collapse_button += "<td> " + obj[x].cholesterol_level + "</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Blood Sugar </td>";
+                collapse_button += "<td> " + obj[x].blood_sugar + "</td>";
+                collapse_button += "<td> " + obj[x].blood_sugar_level + "</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Vitamin D3 </td>";
+                collapse_button += "<td> " + obj[x].vitamin_d3 + "</td>";
+                collapse_button += "<td> " + obj[x].vitamin_d3_level + "</td>";
+                collapse_button += "</tr>";
+                collapse_button += "<tr>";
+                collapse_button += "<td> Vitamin B12 </td>";
+                collapse_button += "<td> " + obj[x].vitamin_b12 + "</td>";
+                collapse_button += "<td> " + obj[x].vitamin_b12_level + "</td>";
+                collapse_button += "</tr>";
+                collapse_button += "\n</table> </div> \n </div> \n";
+                $("#forms").append(collapse_button);
+            }
+
+        }
+
+
+    });
+}
+
+function show_charts(obj) {
+    
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Cholesterol');
+    data.addColumn('number', 'iron');
+    data.addColumn('number', 'Vitamin B12');
+    data.addColumn('number', 'Vitamin D3');
+    data.addColumn('number', 'blood_sugar');
+    for (x in obj) {
+        data.addRow([obj[x].test_date, obj[x].cholesterol, obj[x].iron, obj[x].vitamin_b12, obj[x].vitamin_d3, obj[x].blood_sugar ])
+    }
+    var options = {
+        width: 800,
+        height: 600,
+        hAxis: {
+            title: 'Month'
+        },
+        vAxis: {
+            title: 'Cholesterol Value'
+        },
+        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('charts'));
+    chart.draw(data, options);
+    
 
 }

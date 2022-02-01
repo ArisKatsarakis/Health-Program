@@ -12,6 +12,7 @@
 public class BloodTest {
     int bloodtest_id;
     String amka;
+    String Username;
     String test_date;
     String medical_center;
     double vitamin_d3;
@@ -25,7 +26,13 @@ public class BloodTest {
          double iron;
     String iron_level;
    
-
+    public String get_Username(){
+        return Username;
+    }
+    
+    public void set_Username(String user){
+        this.Username = user;
+    }
     public int getBloodtest_id() {
         return bloodtest_id;
     }

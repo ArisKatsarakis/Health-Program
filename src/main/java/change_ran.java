@@ -70,7 +70,15 @@ public class change_ran extends HttpServlet {
             Connection con = DB_Connection.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            rs.next();
+            
+            if(!rs.next()){
+                query = "select * from rendevouz where username_pat = '"
+                + request.getParameter("username")
+                + "' and state = 'selected' ;";
+                rs.close();
+                rs = stmt.executeQuery(query);
+                rs.next();
+            }
             out.print("[");
             Randevouz ra = new Randevouz();
             ra.setRandevouz_id(rs.getInt("id"));
@@ -120,7 +128,14 @@ public class change_ran extends HttpServlet {
             Statement stmt = con.createStatement();
             stmt.execute(query);
             query = "insert into email (sender,receiver,subject,text) "
-                    + "select username_doc,username_pat,day + 'Canceled' ,'Your apointment for the day Canceled' from rendevouz where id = '"
+                    + "select username_doc,username_pat,day,'Your apointment for the day Canceled' from rendevouz where id = '"
+                    +request.getParameter("r_id")
+                    +"';";
+            System.out.println(query);
+            stmt.execute(query);
+            stmt.execute(query);
+            query = "insert into email (sender,receiver,subject,text) "
+                    + "select username_pat,username_doc,day,'Your apointment for the day Canceled' from rendevouz where id = '"
                     +request.getParameter("r_id")
                     +"';";
             System.out.println(query);
@@ -128,8 +143,8 @@ public class change_ran extends HttpServlet {
 
         }catch(Exception e){
             System.out.println(e.toString());
-        }
-    }
+        } 
+   }
 
     /**
      * Returns a short description of the servlet.

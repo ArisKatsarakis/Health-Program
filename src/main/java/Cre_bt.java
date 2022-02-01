@@ -65,6 +65,7 @@ public class Cre_bt extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
+        User new_user = User.getUser(request.getParameter("username"));
         double vitamin_d3;
         double vitamin_b12;
         double cholesterol;
@@ -80,7 +81,7 @@ public class Cre_bt extends HttpServlet {
         cholesterol = rd.nextDouble()* 250;
         blood_sugar = rd.nextDouble() * 300;
         iron = rd.nextDouble()* 220;
-        bt.setAmka("22111993111");
+        bt.setAmka(new_user.getAmka());
         bt.setTest_date(str.toString());
         bt.setBlood_sugar(blood_sugar);
         bt.setCholesterol(cholesterol);

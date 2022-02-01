@@ -99,8 +99,9 @@ public class ren extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Doctor new_user =  Doctor.getDoc(request.getParameter("username"));
         String q = "insert into rendevouz (username_doc, username_pat, day, hour, state, price) values ( '"
-                + request.getParameter("username")
+                + new_user.getLastname() + " Address: " + new_user.getAddress()
                 + "', 'null', '"
                 + request.getParameter("date")
                 + "',"

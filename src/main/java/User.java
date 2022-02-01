@@ -113,8 +113,8 @@ public class User {
             return get;
     }
     
-    public static User getDoc(String username){
-        User get = new User();
+    public static Doctor getDoc(String username){
+        Doctor get = new Doctor();
         try{
          Connection con = DB_Connection.getConnection();
                 Statement stmt = con.createStatement();

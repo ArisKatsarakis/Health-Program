@@ -66,6 +66,7 @@ public class Show_bt extends HttpServlet {
                 + "'"
                 + request.getParameter("username")
                 + "');";
+        
         try {
             Connection con = DB_Connection.getConnection();
             Statement stmt = con.createStatement();

@@ -12,14 +12,24 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
 
+
+
+        </script>
+        <script src="https://www.google.com/jsapi"></script>
+        <script>
+            google.charts.load('current', {'packages': ['corechart']});
+            google.charts.load('current', {packages: ['corechart', 'line']});
+            google.charts.setOnLoadCallback("show_charts()");
+        </script>
     </head>
     <body>
         <header>
             <h1 href="index.html"> Welcome to our HY 359 API </h1>
             <button onclick = "Show_Reg()" class = "btn btn-light">Register</button>
             <button onclick= "Show_log()" class = "btn btn-dark">Log in</button>
-            
+
         </header>
         <h2 id="username">
 
