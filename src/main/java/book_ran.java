@@ -78,7 +78,7 @@ public class book_ran extends HttpServlet {
             ra.setStatus(rs.getString("state"));
             Gson data = new Gson();
             String ret = data.toJson(ra);
-            out.print(ret );
+            out.print(ret);
 
             while (rs.next()) {
                 out.print(",");
@@ -87,6 +87,8 @@ public class book_ran extends HttpServlet {
                 rz.setDoctor_info(rs.getString("username_doc"));
                 rz.setDate_time(rs.getString("day") + " " + rs.getString("hour"));
                 rz.setPrice(rs.getInt("price"));
+                rz.setStatus(rs.getString("state"));
+
                 ret = data.toJson(rz);
                 out.print(ret);
             }
@@ -115,18 +117,18 @@ public class book_ran extends HttpServlet {
                 + "state = 'selected', "
                 + "username_pat = '"
                 + request.getParameter("username")
-                +"' where id = "
+                + "' where id = "
                 + request.getParameter("id")
                 + ";";
-       try{
-           Connection con = DB_Connection.getConnection();
-           Statement stmt = con.createStatement();
-           stmt.execute(query);
-           System.out.println("Appointment Booked Successfully !");
-       }catch(Exception e){
-           System.out.println(e.toString());
-       }
- 
+        try {
+            Connection con = DB_Connection.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.execute(query);
+            System.out.println("Appointment Booked Successfully !");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
     }
 
     /**

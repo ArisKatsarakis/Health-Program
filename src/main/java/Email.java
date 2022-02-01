@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
+
 
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -169,7 +168,7 @@ public class Email extends HttpServlet {
             stmt.execute(query);
             response.setStatus(200);
             out.println("Message Send Successfully!");
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e.toString());
             out.println("Message Send Failed!");
             response.setStatus(500);
@@ -179,28 +178,7 @@ public class Email extends HttpServlet {
         out.flush();
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        String query = "delete from message where id = "
-                + request.getParameter("num")
-                + ";";
-        System.out.println(request.getParameter("num"));
-        try {
-            Connection con = DB_Connection.getConnection();
-            Statement stmt = con.createStatement();
-            stmt.execute(query);
-            System.out.println("Message Deleted !");
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+   
 
-    }
 
 }

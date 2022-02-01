@@ -1,7 +1,15 @@
 function checkpass(form) {
     pwd = form.pass.value;
     pwdr = form.passr.value;
+    uname = form.uname.value;
+    
+    if(uname.length <= 8){
+       
+       document.getElementById("uname-check").style.visibility  = "visible";
+    }else{
+               document.getElementById("uname-check").style.visibility  = "hidden";
 
+    }
     if (pwd == ' ') {
 
 
@@ -36,15 +44,18 @@ function pass_security(pass) {
         if (nmbr > (pass.value.length / 2)) {
             document.getElementById("pass-check").innerHTML = "<p>Password is weak! </p>"
             document.getElementById("pass-check").style.visibility = "visible";
-
-        }
+ 
+       }
     }
 }
 
 function doctor_details(doc) {
     if (doc.value == "doc") {
         document.getElementById("doctor_details").style.visibility = "visible";
-        document.getElementById("lbl").innerHTML = "Doctor's Office Address";
+        document.getElementById("lbl").innerHTML = "Doctor's Office Address:";
+    }else{
+        document.getElementById("doctor_details").style.visibility = "hidden";
+        document.getElementById("lbl").innerHTML = "Address:" ;
     }
     // finish on change 
 }

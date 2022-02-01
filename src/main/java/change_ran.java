@@ -119,7 +119,13 @@ public class change_ran extends HttpServlet {
             Connection con = DB_Connection.getConnection();
             Statement stmt = con.createStatement();
             stmt.execute(query);
-            
+            query = "insert into email (sender,receiver,subject,text) "
+                    + "select username_doc,username_pat,day + 'Canceled' ,'Your apointment for the day Canceled' from rendevouz where id = '"
+                    +request.getParameter("r_id")
+                    +"';";
+            System.out.println(query);
+            stmt.execute(query);
+
         }catch(Exception e){
             System.out.println(e.toString());
         }

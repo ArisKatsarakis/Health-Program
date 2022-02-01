@@ -12,7 +12,7 @@ public class User {
     String telephone;
     int height;
     double weight;
-    int blooddonor;
+    String blooddonor;
     String bloodtype;
     String type;
 
@@ -69,7 +69,7 @@ public class User {
                     "'"+this.getTelephone()+"',"+
                     "'"+this.getHeight()+"',"+
                     "'"+this.getWeight()+"',"+
-                    "'"+"yes"+"',"+
+                    "'"+this.getBlooddonor()+"',"+
                     "'"+this.getBloodtype()+"'"+
                     ");";
             System.out.println(query);
@@ -220,7 +220,7 @@ public class User {
 
     }
 
-    public int getBlooddonor(){
+    public String getBlooddonor(){
         return this.blooddonor;
     }
 
@@ -256,7 +256,7 @@ public class User {
         this.birthdate = birthdate;
     }
 
-    public void setBlooddonor(int blooddonor) {
+    public void setBlooddonor(String blooddonor) {
         this.blooddonor = blooddonor;
     }
 

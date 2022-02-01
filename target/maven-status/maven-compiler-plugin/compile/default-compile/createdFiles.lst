@@ -7,8 +7,11 @@ change_ran.class
 get_data.class
 register.class
 BloodTest.class
+mail.class
 User.class
 Cre_bt.class
+Show_bt.class
 Login_Servlet.class
+Email.class
 mainClasses/JSON_Converter.class
 Reg_Form.class

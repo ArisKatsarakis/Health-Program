@@ -54,17 +54,17 @@ function  show_data() {
         type: 'get',
         success: function (data) {
             const d = JSON.parse(data);
-            alert(data);
+            $("#data").append(data);
 
         }
     }
     );
 }
 
-function  show_type() {
-    var type = $('input[name = "type"]:checked').val();
-    alert(type);
-}
+//function  show_type() {
+//    var type = $('input[name = "type"]:checked').val();
+//    alert(type);
+//}
 
 function create_ren() {
     $.ajax({
@@ -134,7 +134,7 @@ function book_ran() {
         success: function (data) {
             alert(data);
             var obj = $.parseJSON(data);
-//            for(var ob in obj)
+            for(var ob in obj){
             $("#data").append("  <div class='form-check'>" +
                     "<input class= 'form-check-input' type='checkbox' value='" + obj[0].randevouz_id + "' id='flexCheckDefault'>" +
                     "<label   class='form-check-label' for='flexCheckDefault'>" +
@@ -142,6 +142,7 @@ function book_ran() {
                     "  </label>" +
                     " </div> ");
             $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it()' >Book it! </button>");
+        }
         }
     });
 }
@@ -217,6 +218,7 @@ function cancel(id) {
         data: {r_id: id},
         success: function (data) {
             alert("Successfully Canceled !");
+            
         }
     });
 }
