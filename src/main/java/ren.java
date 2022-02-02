@@ -101,7 +101,7 @@ public class ren extends HttpServlet {
             throws ServletException, IOException {
         Doctor new_user =  Doctor.getDoc(request.getParameter("username"));
         String q = "insert into rendevouz (username_doc, username_pat, day, hour, state, price) values ( '"
-                + new_user.getLastname() + " Address: " + new_user.getAddress()
+                + new_user.getUname()
                 + "', 'null', '"
                 + request.getParameter("date")
                 + "',"
