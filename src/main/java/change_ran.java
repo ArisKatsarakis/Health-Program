@@ -63,7 +63,7 @@ public class change_ran extends HttpServlet {
         //Get Scheduled Randevouz 
         String query = "select * from rendevouz where username_doc = '"
                 + request.getParameter("username")
-                + "' and state = 'selected' ;";
+                + "' ;";
         PrintWriter out = response.getWriter();
         try {
             System.out.println(query);
@@ -77,6 +77,8 @@ public class change_ran extends HttpServlet {
                 + "' and state = 'selected' ;";
                 rs.close();
                 rs = stmt.executeQuery(query);
+                rs.next();
+            }else{
                 rs.next();
             }
             out.print("[");
@@ -105,6 +107,7 @@ public class change_ran extends HttpServlet {
             out.print("]");
         } catch (Exception e) {
             System.out.println(e.toString());
+            out.print("No randevouz was booked!");
         }
        out.flush();
     }

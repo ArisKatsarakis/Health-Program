@@ -1,12 +1,15 @@
 
 function  Show_Reg() {
+    $("#content").empty();
     $("#content").load("web/form.html");
 }
 function  Show_log() {
+    $("#content").empty();
     $("#content").load("web/login.html");
 }
 
 function Login() {
+
     var xhr = new XMLHttpRequest();
     var form = 0;
     xhr.onload = function () {
@@ -19,9 +22,13 @@ function Login() {
                     alert("Successful Login !");
                 }
                 if (form.type == "def") {
+                    $("#content").empty();
+
                     $("#content").load("web/userpanel.html");
                     $("#username").html(form.username);
                 } else {
+                    $("#content").empty();
+
                     $("#content").load("web/docpanel.html");
                     $("#username").html(form.username);
                 }
@@ -46,6 +53,7 @@ function Login() {
 
 }
 function Show_Panel(data) {
+    $("#content").empty();
     $("#content").load("web/userpanel.html");
 }
 function  show_data() {
@@ -133,23 +141,23 @@ function book_ran() {
         url: "book_ran",
         type: 'get',
         success: function (data) {
-            
+
             var obj = $.parseJSON(data);
             for (x in obj) {
                 $("#data").append("  <div class='form-check'>" +
-                        "<input class= 'form-check-input' type='checkbox' value='" + obj[x].randevouz_id + "' name='"+obj[x].randevouz_id+"'>" +
-                        "<label   class='form-check-label' for='"+obj[x].randevouz_id+"'>" +
-                        "Doctor Info: " + obj[x].doctor_info + " Price: " + obj[x].price + " State: " + obj[x].status + " Date: " +obj[x].date_time +
+                        "<input class= 'form-check-input' type='checkbox' value='" + obj[x].randevouz_id + "' name='" + obj[x].randevouz_id + "'>" +
+                        "<label   class='form-check-label' for='" + obj[x].randevouz_id + "'>" +
+                        "Doctor Info: " + obj[x].doctor_info + " Price: " + obj[x].price + " State: " + obj[x].status + " Date: " + obj[x].date_time +
                         "  </label>" +
                         " </div> ");
-                $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it("+obj[x].randevouz_id+")' >Book it! </button>");
+                $("#data").append("<button type = 'button' class = 'btn-primary' onclick = 'book_it(" + obj[x].randevouz_id + ")' >Book it! </button>");
             }
         }
     });
 }
 
 function book_it(pat) {
-    
+
     $.ajax({
         url: 'book_ran',
         type: 'POST',
@@ -170,6 +178,7 @@ function get_bt() {
         success: function (data) {
             //append the blood test
             var json = $.parseJSON(data);
+            $("#data").empty();
             $("#data").append("Successfully Created\n");
 
         }
@@ -282,7 +291,7 @@ function show_bt() {
             console.log(cholesterol);
 
             var chars = "<div class= 'form-control' id = 'charts'><h2> Charts</h2>\n\n\
-<button class = 'btn-primary' onclick= 'show_charts ("+data+")'> Show Charts </button> \n </div>";
+<button class = 'btn-primary' onclick= 'show_charts (" + data + ")'> Show Charts </button> \n </div>";
             $("#data").append(chars);
 //            show_charts(cholesterol);
         }
@@ -305,18 +314,19 @@ function show_messages(type) {
             if (type === 'inbox') {
                 html = "<div class = 'container-fluid'>";
                 for (x in obj) {
-                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10' >  From: " + obj[x].from;
-                    html += "   Subject:  " + obj[x].subject;
-                    html += "</p> \n <button type = 'button' class = 'btn-secondary'> Reply </button> \n \n\
-<button type = 'button' onclick = 'del_messages(" + obj[x].id + ")'class = 'btn-danger'>  delete </button>                  \n\
-</div> \n </div";
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p  onclick = 'show_text("+obj[x].id+")'  class = 'col-md-10'> From: " + obj[x].from;
+                    html += "   Subject " + obj[x].subject;
+                    html += "</p> \n <button type = 'button' onclick = 'send_message()' class = 'btn-secondary'> Reply </button> \n \n\
+<button type = 'button' onclick = 'del_messages(" + obj[x].id + ")' class = 'btn-danger'>delete  </button> </div> \n ";
 
                 }
+                html += "</div>";
+                html += "\n <div id = 'index'> </div>";
                 $("#forms").append(html);
             } else {
                 html = "<div class = 'container-fluid'>";
                 for (x in obj) {
-                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p class = 'col-md-10'> To: " + obj[x].to;
+                    html += "<div class = 'row' style = 'border-bottom: 1px solid black'> <p  onclick = 'show_text("+obj[x].id+")' class = 'col-md-10'> To: " + obj[x].to;
                     html += "   Subject " + obj[x].subject;
                     html += "</p> \n <button type = 'button' onclick = 'send_message()' class = 'btn-secondary'> Reply </button> \n \n\
 <button type = 'button' onclick = 'del_messages(" + obj[x].id + ")' class = 'btn-danger'>delete  </button> </div> \n ";
@@ -335,11 +345,10 @@ function show_messages(type) {
 
 function del_messages(id) {
     $.ajax({
-        url: "email",
-        type: "delete",
-        data: {num: "1"},
+        url: "Del_Email",
+        type: "GET",
+        data: {num: id},
         success: function (data) {
-            alert(id);
             alert("Message Deleted !");
             $("#forms").empty();
             show_messages();
@@ -458,7 +467,8 @@ function show_history() {
 }
 
 function show_charts(obj) {
-    
+    var test = JSON.stringify(obj);
+
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
     data.addColumn('number', 'Cholesterol');
@@ -467,10 +477,10 @@ function show_charts(obj) {
     data.addColumn('number', 'Vitamin D3');
     data.addColumn('number', 'blood_sugar');
     for (x in obj) {
-        data.addRow([obj[x].test_date, obj[x].cholesterol, obj[x].iron, obj[x].vitamin_b12, obj[x].vitamin_d3, obj[x].blood_sugar ])
+        data.addRow([obj[x].test_date, obj[x].cholesterol, obj[x].iron, obj[x].vitamin_b12, obj[x].vitamin_d3, obj[x].blood_sugar])
     }
     var options = {
-        width: 800,
+        width: 1000,
         height: 600,
         hAxis: {
             title: 'Month'
@@ -478,10 +488,47 @@ function show_charts(obj) {
         vAxis: {
             title: 'Cholesterol Value'
         },
-        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
+        colors: ['#e0440e', '#000000', '#17FF00', '#002EFF', '#FF0000']
     };
     var chart = new google.visualization.LineChart(document.getElementById('charts'));
     chart.draw(data, options);
+    $("#charts").append("<div id ='more_charts' > \n\
+<button onclick= 'more_charts("+test+")'>More Charts </button> </div>");
     
 
+}
+function show_text(id){
+    $.ajax({
+        url:"Check_Email",
+        type: "GET",
+        data:{e_id: id},
+        success:function(data){
+            $("#index").empty();
+            $("#index").append(data);
+        }
+            
+    })
+}
+
+function more_charts(obj){
+    data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number','Cholesterol');
+    
+    for(x in obj){
+        data.addRow([obj[x].test_date, obj[x].cholesterol]);
+    }
+    
+    var options = {
+          chart: {
+            title: 'Cholesterol Process',
+            subtitle: 'Depending the Dates of the Blood Test',
+          },
+          bars: 'horizontal' ,// Required for Material Bar Charts.,
+          width:900,
+          height:500
+        };
+        var chart = new google.charts.Bar(document.getElementById('more_charts'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+    
 }

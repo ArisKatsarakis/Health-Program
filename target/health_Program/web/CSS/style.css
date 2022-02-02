@@ -23,3 +23,9 @@ body {
 .row{
     border: 1px solid black;
 }
+
+footer{
+     border-top: 2px double black;
+    margin-top: 5%;
+}
+

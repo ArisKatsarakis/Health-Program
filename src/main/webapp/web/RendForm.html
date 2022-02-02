@@ -8,20 +8,25 @@
             <div class = "form-control" > 
                 <label for ="date"> Date of appointment</label>
                 <input type="date" value = '1994-11-22' id = "date">
-                <div class = "form-row" id ="hour_table">
-                    <label class="form-control" for = "hours">Appointment's Time (format: hhmm)</label>
-                    <input class="form-control col-md-2" id="hour" type="number" min = "08" max = "20">:
-                    <input class="form-control col-md-2" id="min" type="number" min = "00" max = "59">
+                <div class = "form-control col-md-12" id ="hour_table">
+                    <label   for ="hour">Hour: </label>
+
+                    <input class=" col-md-1" name = 'hour' id="hour" type="number" min = "08" max = "20">
+                    <label   for ="min"> Minutes: </label>
+
+                    <input class = " col-md-1" name = "min" id="min" type="number" min = "00" max = "59">
+
                 </div>
-                <div class = "form-row" > 
-                    <label  class = "col-md-4" for ="price">Price: </label>
-                    <input id = "price" type ="number" min = "10" max ="80" value ="50" class ="form-control col-md-6">€
-                    <div>
-                        <button type ="submit" class="btn-secondary">Create Rendevou</button>
-                    </div>
-                    <div class = "form-control"  id="apoint">
-                        <button type ="button" onclick = "show_ran()"> Show Randevouz</button>
-                    </div>
+                <div class = "form-control col-md-12" > 
+                    <label   for ="price">Price: €</label>
+                    <input name ="price" id = "price" type ="number" min = "10" max ="80" value ="50" class =" col-md-1">
+                    
+                </div>
+                <div class ="form-control">
+                    <button type ="submit" class="btn-secondary"> Create Rendevouz </button>
+                </div>
+                <div class = "form-control"  id="apoint">
+                    <button type ="button" onclick = "show_ran()"> Show Randevouz</button>
                 </div>
         </form>
     </body>
